@@ -9,7 +9,7 @@ electrodes = {AF3, AF4, F3, F4, F7, F8, FC5, FC6, O1, O2, P7, P8, T7, T8};
 % each window should be 14x128 -> electrodes x pts/sec
 % there should be a total of 300 windows, however 148 pts are missing
 % will be a total of 298 windows
-step = 128; % how many points are in each window
+step = 128*6; % how many points are in each window (Hz * sec)
 [num,~] = size(AF3);
 numWindows = num - step;
 % each window will be 14x128
@@ -31,4 +31,4 @@ for i = 1:numWindows
     windows{i} = window;
 end
 % have all chopped windows, save to mat file
-save(saveFile, 'windows');
+save(saveFile, 'windows', '-v7.3');

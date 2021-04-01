@@ -2,10 +2,7 @@
 % for each of the subjects, open files with windows
 % shuffles windows, randomly select 'test' percent of windows, remove and store
 % do for all files, shuffle final test and train, then save
-function separate
-% if shuffle = 0: don't shuffle
-% if shuffle = 1: shuffle
-shuffle = 1;
+function separate_ordered
 
 % set the percent of data to be saved for test and the percent for train
 testPercent = 0.2;
@@ -25,54 +22,31 @@ for i = 1:28
         temp = "ProcessedData/S" + i;
     end 
     % file to save data to
-    saveFile = "TestTrain/" + temp + ".mat";
-    % each value will be a 14x(128*6) window
-    
-    trainData = zeros(14, step, 1, trainNum * 4);
-    testData = zeros(14, step, 1, testNum * 4);
+    saveFile = "D:/CISC 867/TestTrain/" + temp + ".mat";
+    % each value will be a 14x(128*6) window, 4 files, each separated
+    % save different files
+    trainData = zeros(4, 14, step, 1, trainNum);
+    testData = zeros(4, 14, step, 1, testNum);
     % corresponding labels
-    trainAns = zeros(trainNum * 4, 1);
-    testAns = zeros(testNum * 4, 1);
+    trainAns = zeros(4, trainNum, 1);
+    testAns = zeros(4, testNum, 1);
     for j = 1:4
         file = temp + j + ".mat";
         load(file);
-        % shuffle by generating randomperm
-        if shuffle == 1
-            p = randperm(num);
-        else
-            p = [1:num]; % don't shuffle
-        end
-        newWindows = windows(p, 1);
         count = 1;
         % assign to train and test
         for k = (j-1)*trainNum + 1:j*trainNum
-            trainData(:, :, :, k) = cell2mat(newWindows(count));
+            trainData(j, :, :, :, k) = cell2mat(windows(count));
             count = count + 1;
             trainAns(k) = j;
         end
         for k = (j-1)*testNum + 1:j*testNum
-            testData(:,:,:,k) = cell2mat(newWindows(count));
+            testData(j, :, :, :, k) = cell2mat(windows(count));
             count = count + 1;
             % also fill in answers
             testAns(k) = j;
         end
     end
-    % shuffle so that all the windows are mixed in with other genres
-    if shuffle == 1
-        p = randperm(4*trainNum);
-    
-    else
-        p = [1:4*trainNum];
-    end
-    trainData = trainData(:,:,:,p);
-    trainAns = trainAns(p,1);
-    if shuffle == 1
-        p = randperm(4*testNum);
-    else
-        p = [1:4*testNum];
-    end
-    testData = testData(:,:,:,p);
-    testAns = testAns(p, 1);
     save(saveFile,'trainData', 'trainAns', 'testData', 'testAns', '-v7.3');
     disp(i);
 end
