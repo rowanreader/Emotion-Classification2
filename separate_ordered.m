@@ -1,7 +1,6 @@
 % separates the data into testing and training data
 % for each of the subjects, open files with windows
-% shuffles windows, randomly select 'test' percent of windows, remove and store
-% do for all files, shuffle final test and train, then save
+% doesn't shuffle, first n% is train, remainder is test
 function separate_ordered
 
 % set the percent of data to be saved for test and the percent for train

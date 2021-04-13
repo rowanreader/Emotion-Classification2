@@ -5,7 +5,7 @@
 function separate
 % if shuffle = 0: don't shuffle
 % if shuffle = 1: shuffle
-shuffle = 1;
+shuffle = 0;
 
 % set the percent of data to be saved for test and the percent for train
 testPercent = 0.2;
@@ -25,7 +25,7 @@ for i = 1:28
         temp = "ProcessedData/S" + i;
     end 
     % file to save data to
-    saveFile = "TestTrain/" + temp + ".mat";
+    saveFile = "D:/CISC 867/TestTrain/" + temp + ".mat";
     % each value will be a 14x(128*6) window
     
     trainData = zeros(14, step, 1, trainNum * 4);
