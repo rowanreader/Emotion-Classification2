@@ -1,3 +1,4 @@
+% for my own EEG data
 % chops up my EEG data
 % sampled at 250Hz, reduce to 5 min sections (cut from ends)
 % then make a window
@@ -7,8 +8,8 @@
 function separateMyEEG
 dir = "MyEEGData/G";
 step = 250*6; % 250 Hz, 6 seconds
-numPoints = 90000;
-saveDir = "D:/CISC 867/MyChoppedData/myEEG";
+numPoints = 90000; % number of points we want to take from the files
+saveDir = "D:/CISC 867/MyChoppedData/myEEG"; % where to save the data
 for i = 1:5
     file = dir + i + ".mat";
     load(file);
@@ -19,7 +20,7 @@ for i = 1:5
     [~, m] = size(y);
     diff = ceil((m - numPoints)/2);
     array = y(2:15, diff:diff+numPoints-1);
-    % must rearrange array into same order of elecrodes.
+    % rearrange array into same order of elecrodes as GAMEEMO.
     % current order:
     % [AF3, AF4, F7, F8, F3, F4, O1, O2, FC5, P7, P8, T8, FC6, T7]
     % desired order:

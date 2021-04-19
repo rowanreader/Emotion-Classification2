@@ -1,5 +1,6 @@
+% used on GAMEEMO dataset
 % opens EEG data files, generates Hamming windows (stride of 1)
-
+% saves windows as a 4D matrix (EEG channels x pts x 1 (grayscale) x numWindows)
 function chop(file, saveFile)
 % loads all 14 electrods, each is a 38252x1 array
 load(file);

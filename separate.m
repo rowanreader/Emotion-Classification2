@@ -1,3 +1,4 @@
+% for GAMEEMO dataset
 % separates the data into testing and training data
 % for each of the subjects, open files with windows
 % shuffles windows, randomly select 'test' percent of windows, remove and store

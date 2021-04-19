@@ -1,12 +1,13 @@
+% for my EEG data
 % applies deep CNN to test and training data
 function myCNN()
-% if funny = 1, use data from John Mulaney skit (actually funny)
+% if funny != 0, use data from John Mulaney skit (actually funny)
 % otherwise use data collected from watching the gameplay
 funny = 1; 
 
 % define architecture
 layers = [
-    % pretend its an image, 14 channels x 128*6 (each window is 6 secs)
+    % pretend its an image, 14 channels x 250*6 (each window is 6 secs)
     imageInputLayer([14 250*6 1])    
     convolution2dLayer([14 64], 128,'Padding','same')
     reluLayer 
@@ -16,6 +17,7 @@ layers = [
     reluLayer
     maxPooling2dLayer([1 4],'Stride',2)
     
+    % add extra layers
     convolution2dLayer([1 128], 64,'Padding','same')
     reluLayer
     convolution2dLayer([1 128], 64,'Padding','same')
@@ -52,9 +54,11 @@ net = trainNetwork(trainData, categorical(trainAns), layers, options);
 originalNet = net;
 save originalNet;
 
+% apply to training data to see how good it is on itself (no test data yet)
 predLabelsTest = net.classify(trainData);
 accuracy = sum(predLabelsTest == categorical(trainAns)) / numel(trainAns)
 
+% confusion matrix
 [C,order] = confusionmat(categorical(trainAns), predLabelsTest);
 conf = confusionchart(C, {'Boring','Calm','Horror','Funny'});
 title = "Author's Training Confusion Matrix";

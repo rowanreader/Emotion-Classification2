@@ -1,7 +1,10 @@
+% for my EEG data
+% loads saved NN and classifies test data
+% saves confusion matrix, prints accuracy
 function testNet
 
-load("originalNet.mat")
-load("D:/CISC 867/MyTestTrain/myTestData2.mat");
+load("originalNet.mat") % neural net
+load("D:/CISC 867/MyTestTrain/myTestData2.mat"); % data to be classified
 
 newAns = originalNet.classify(testData);
 accuracy = sum(newAns == categorical(testAns)) / numel(testAns)

@@ -1,8 +1,9 @@
+% for GAMEEMO dataset
 % applies deep CNN to test and training data
 function CNN(temp, i)
 % define architecture
 layers = [
-    % pretend its an image, 14 channels x 128*6 (each window is 6 secs)
+    % pretend its an image, 14 channels x 128*6 (each window is 6 secs) x 1 
     imageInputLayer([14 128*6 1])    
     convolution2dLayer([14 32], 128,'Padding','same')
     reluLayer 
@@ -11,12 +12,11 @@ layers = [
     convolution2dLayer([1 64], 64,'Padding','same')
     reluLayer
     maxPooling2dLayer([1 2],'Stride',2)
-%     convolution2dLayer([1 64], 64,'Padding','same')
-%     reluLayer
      
     fullyConnectedLayer(128)
     reluLayer
     
+    % output layer - 4 emotions
     fullyConnectedLayer(4)
     softmaxLayer
     classificationLayer];
@@ -26,12 +26,12 @@ layers = [
 
 % automatically shuffles once before training
 miniBatchSize = 256;
-    options = trainingOptions( 'sgdm',...
-    'MiniBatchSize', miniBatchSize,...
-    'InitialLearnRate', 0.001,...
-    'MaxEpochs', 1,...
-    'ExecutionEnvironment', 'auto',...
-    'Plots', 'training-progress');
+options = trainingOptions( 'sgdm',...
+'MiniBatchSize', miniBatchSize,...
+'InitialLearnRate', 0.001,...
+'MaxEpochs', 1,...
+'ExecutionEnvironment', 'auto',...
+'Plots', 'training-progress');
 
 % file to load data from
 % shuffled
@@ -56,8 +56,11 @@ predLabelsTest = net.classify(testData);
 disp(i);
 accuracy = sum(predLabelsTest == categorical(testAns)) / numel(testAns)
 
+
+% generate confusion matrix
 [C,order] = confusionmat(categorical(testAns), predLabelsTest);
 conf = confusionchart(C, {'Boring','Calm','Horror','Funny'});
+% change name if shuffled/unshuffled
 title = "Unshuffled " + i + " Confusion Matrix";
 conf.Title = title;
 saveas(gcf, title + ".jpg");
