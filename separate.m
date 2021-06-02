@@ -26,7 +26,11 @@ for i = 1:28
         temp = "ProcessedData/S" + i;
     end 
     % file to save data to
-    saveFile = "D:/CISC 867/TestTrain/" + temp + ".mat";
+    if shuffle == 1
+        saveFile = "D:/CISC 867/TestTrainShuffled/" + temp + ".mat";
+    else
+        saveFile = "D:/CISC 867/TestTrainUnshuffled/" + temp + ".mat";
+    end
     % each value will be a 14x(128*6) window
     
     trainData = zeros(14, step, 1, trainNum * 4);
